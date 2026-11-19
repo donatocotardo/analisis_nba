@@ -4,9 +4,9 @@ Convierte un clip corto de una retransmisión de la NBA en una **pizarra táctic
 
 ## Ejemplo
 
-<video src="ejemplo.mp4" controls width="100%"></video>
+![Demostración del proyecto](./demo.gif)
 
-Si el vídeo no se reproduce arriba, ábrelo directamente: [ejemplo.mp4](ejemplo.mp4)
+Si el vídeo no se reproduce arriba, ábrelo directamente: [demo.gif](demo.gif)
 
 En el vídeo:
 - **Izquierda:** el vídeo original. Cada jugador tiene una caja del color de su equipo con su dorsal y su nombre. El balón va marcado con un círculo naranja.
