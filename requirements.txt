@@ -1,0 +1,10 @@
+opencv-python
+numpy
+scipy
+scikit-learn
+supervision
+trackers
+nba_api
+python-dotenv
+pyyaml
+requests

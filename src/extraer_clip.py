@@ -2,12 +2,12 @@
 import cv2
 from pathlib import Path
 
-VIDEO_PATH = Path("videos/Golden State Warriors vs San Antonio Spurs Full Game Highlights - November 13, 2026.mp4")
-OUTPUT_PATH = Path("videos/jugada.mp4")
+VIDEO_PATH = Path("videos/Philadelphia 76ers vs Orlando Magic Full Game Highlights - November 18, 2026 _ NBA Season.mp4")
+OUTPUT_PATH = Path("videos/jugada_76ers.mp4")
 
 # Segundos del vídeo original
-START_TIME = 45
-END_TIME = 55
+START_TIME = 125
+END_TIME = 131
 
 video = cv2.VideoCapture(str(VIDEO_PATH))
 

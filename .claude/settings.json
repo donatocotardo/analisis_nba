@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "plansDirectory": ".claude/plans",
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe *)",
+      "PowerShell(.venv\\Scripts\\python.exe *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "PowerShell(git status*)",
+      "PowerShell(git diff*)",
+      "PowerShell(git log*)",
+      "PowerShell(git show*)",
+      "Edit(src/**)",
+      "Edit(main.py)",
+      "Edit(outputs/**)"
+    ],
+    "deny": [
+      "Read(./.env)"
+    ]
+  }
+}

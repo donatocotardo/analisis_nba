@@ -2,3 +2,7 @@
 pesos/
 videos/
 outputs/
+.env
+cache/
+__pycache__/
+.claude/settings.local.json

@@ -1,45 +1,42 @@
+"""Analizador de jugadas NBA → pizarra 2D.
 
-import cv2
+Uso:
+    python main.py videos/jugada.mp4 --local SAS --visitante GSW
+    python main.py videos/otra.mp4 --local LAL --visitante BOS --temporada 2026-27
+    python main.py videos/jugada.mp4 --local SAS --visitante GSW --reprocesar
+"""
+
+import argparse
 import time
+import warnings
+from pathlib import Path
 
-#video = cv2.VideoCapture("videos/jugada.mp4")
-video = cv2.VideoCapture("outputs/deteccion.mp4")
+warnings.filterwarnings("ignore", category=FutureWarning)
+
+from src import config  # noqa: E402
+from src.pipeline import analizar  # noqa: E402
 
 
-if not video.isOpened():
-    raise RuntimeError("No se pudo abrir el vídeo")
+def main():
+    parser = argparse.ArgumentParser(description="Analiza una jugada NBA y genera una pizarra 2D")
+    parser.add_argument("video", type=Path, help="Ruta del clip (mp4)")
+    parser.add_argument("--local", required=True, help="Abreviatura del equipo local (p. ej. SAS)")
+    parser.add_argument("--visitante", required=True, help="Abreviatura del visitante (p. ej. GSW)")
+    parser.add_argument("--temporada", help="Temporada NBA, p. ej. 2026-27 (por defecto la actual)")
+    parser.add_argument("--fps", type=float, default=config.FPS_ANALISIS,
+                        help=f"Fotogramas por segundo a analizar (por defecto {config.FPS_ANALISIS})")
+    parser.add_argument("--reprocesar", action="store_true",
+                        help="Repite la inferencia aunque exista en caché")
+    args = parser.parse_args()
 
-fps = video.get(cv2.CAP_PROP_FPS)
-frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
+    if not args.video.exists():
+        parser.error(f"No existe el vídeo: {args.video}")
 
-print(f"FPS: {fps}")
-print(f"Fotogramas: {int(frames)}")
+    inicio = time.perf_counter()
+    salida = analizar(args.video, args.local, args.visitante, args.temporada,
+                      args.fps, args.reprocesar)
+    print(f"\nListo en {time.perf_counter() - inicio:.1f} s → {salida}")
 
-if fps <= 0:
-    video.release()
-    raise RuntimeError("No se pudo obtener una frecuencia de fotogramas válida")
 
-print(f"Duración: {frames / fps:.2f} segundos")
-
-window_name = "NBA Play Analyzer"
-playback_started = time.perf_counter()
-frame_index = 0
-
-while True:
-    ret, frame = video.read()
-
-    if not ret:
-        break
-
-    cv2.imshow(window_name, frame)
-    frame_index += 1
-
-    next_frame_time = playback_started + frame_index / fps
-    remaining_ms = max(1, round((next_frame_time - time.perf_counter()) * 1000))
-    key = cv2.waitKey(remaining_ms) & 0xFF
-
-    if key == ord("q") or cv2.getWindowProperty(window_name, cv2.WND_PROP_VISIBLE) < 1:
-        break
-
-video.release()
-cv2.destroyAllWindows()
+if __name__ == "__main__":
+    main()
